@@ -32,6 +32,7 @@
             border-radius: 20px;
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            position: relative;
         }
         
         .app-header {
@@ -66,7 +67,7 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            margin-bottom: 15px; /* Reduzido de 30px para 15px */
+            margin-bottom: 15px;
         }
         
         .feature-item {
@@ -115,7 +116,7 @@
         
         .sos-section {
             text-align: center;
-            padding: 15px 20px 20px; /* Reduzido padding superior de 20px para 15px */
+            padding: 15px 20px 20px;
             background-color: #f8f9fa;
             border-top: 1px solid #eaeaea;
         }
@@ -271,6 +272,145 @@
         .sound-toggle.muted {
             color: #e74c3c;
         }
+        
+        /* Tela de chamada falsa */
+        .fake-call-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            color: white;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .call-header {
+            text-align: center;
+            padding-top: 40px;
+        }
+        
+        .call-contact-name {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .call-contact-type {
+            font-size: 18px;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        
+        .call-status {
+            font-size: 16px;
+            color: #2ecc71;
+        }
+        
+        .call-timer {
+            font-size: 48px;
+            font-weight: 300;
+            text-align: center;
+            margin: 20px 0;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .call-controls {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+        
+        .call-button {
+            background: none;
+            border: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .call-button-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .call-button-text {
+            font-size: 14px;
+        }
+        
+        .call-answer {
+            background-color: #2ecc71;
+        }
+        
+        .call-answer:hover {
+            background-color: #27ae60;
+            transform: scale(1.1);
+        }
+        
+        .call-decline {
+            background-color: #e74c3c;
+        }
+        
+        .call-decline:hover {
+            background-color: #c0392b;
+            transform: scale(1.1);
+        }
+        
+        .call-contact-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 60px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 48px;
+        }
+        
+        .ringing-animation {
+            animation: ring 1.5s infinite;
+        }
+        
+        @keyframes ring {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+        
+        .vibration {
+            animation: vibrate 0.1s infinite;
+        }
+        
+        @keyframes vibrate {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-2px, 2px); }
+            50% { transform: translate(0, 0); }
+            75% { transform: translate(2px, -2px); }
+            100% { transform: translate(0, 0); }
+        }
     </style>
 </head>
 <body>
@@ -279,6 +419,34 @@
         <button class="sound-toggle" id="soundToggle" title="Ativar/Desativar som">
             <i class="bi bi-volume-up"></i>
         </button>
+    </div>
+    
+    <!-- Tela de chamada falsa -->
+    <div class="fake-call-screen" id="fakeCallScreen">
+        <div class="call-header">
+            <div class="call-contact-photo ringing-animation">
+                <i class="bi bi-briefcase-fill"></i>
+            </div>
+            <div class="call-contact-name" id="callContactName">Trabalho</div>
+            <div class="call-contact-type">Celular</div>
+            <div class="call-status" id="callStatus">Chamando...</div>
+            <div class="call-timer" id="callTimer">00:00</div>
+        </div>
+        
+        <div class="call-controls">
+            <button class="call-button" id="declineCallBtn">
+                <div class="call-button-icon call-decline">
+                    <i class="bi bi-telephone-x"></i>
+                </div>
+                <div class="call-button-text">Recusar</div>
+            </button>
+            <button class="call-button" id="answerCallBtn">
+                <div class="call-button-icon call-answer">
+                    <i class="bi bi-telephone"></i>
+                </div>
+                <div class="call-button-text">Atender</div>
+            </button>
+        </div>
     </div>
     
     <div class="app-screen">
@@ -328,7 +496,7 @@
                 </div>
                 
                 <!-- Ligação Falsa -->
-                <div class="feature-item" data-feature="ligacao-falsa">
+                <div class="feature-item" data-feature="ligacao-falsa" id="fakeCallBtn">
                     <div class="feature-icon icon-5">
                         <i class="bi bi-telephone-inbound-fill"></i>
                     </div>
@@ -365,7 +533,12 @@
         // Variáveis globais
         let audioContext;
         let alarmInterval;
+        let callSoundInterval;
         let isSoundEnabled = true;
+        let callTimerInterval;
+        let callSeconds = 0;
+        let callActive = false;
+        let currentOscillators = [];
         
         // Elementos DOM
         const sosButton = document.getElementById('sosButton');
@@ -373,6 +546,13 @@
         const statusText = document.getElementById('statusText');
         const soundToggle = document.getElementById('soundToggle');
         const soundIcon = soundToggle.querySelector('i');
+        const fakeCallScreen = document.getElementById('fakeCallScreen');
+        const fakeCallBtn = document.getElementById('fakeCallBtn');
+        const declineCallBtn = document.getElementById('declineCallBtn');
+        const answerCallBtn = document.getElementById('answerCallBtn');
+        const callTimer = document.getElementById('callTimer');
+        const callStatus = document.getElementById('callStatus');
+        const callContactName = document.getElementById('callContactName');
         
         // Controle de som
         soundToggle.addEventListener('click', function() {
@@ -386,40 +566,65 @@
                 soundToggle.classList.add('muted');
                 soundIcon.className = 'bi bi-volume-mute';
                 soundToggle.title = 'Ativar som';
+                
+                // Para todos os sons se o som for desativado
+                stopAllSounds();
             }
         });
+        
+        // Função para parar todos os sons
+        function stopAllSounds() {
+            // Para o som do alarme
+            if (alarmInterval) {
+                clearInterval(alarmInterval);
+            }
+            
+            // Para o som da chamada
+            stopCallSound();
+            
+            // Para o temporizador
+            stopCallTimer();
+            
+            // Para os osciladores ativos
+            currentOscillators.forEach(osc => {
+                try {
+                    osc.stop();
+                } catch(e) {}
+            });
+            currentOscillators = [];
+            
+            // Fecha o contexto de áudio
+            try {
+                if (audioContext && audioContext.state !== 'closed') {
+                    audioContext.close();
+                }
+            } catch(e) {}
+        }
         
         // Função para criar som de alarme
         function playAlarmSound() {
             if (!isSoundEnabled) return;
             
+            stopAllSounds(); // Para todos os sons antes de iniciar novo
+            
             try {
-                // Cria contexto de áudio
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                
-                // Cria um oscilador para o som de alarme
                 const oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
                 
-                // Conecta os nós
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
                 
-                // Configura o oscilador para um som de sirene
                 oscillator.type = 'sawtooth';
                 oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-                
-                // Configura o ganho (volume)
                 gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
                 
-                // Inicia o oscilador
                 oscillator.start();
+                currentOscillators.push(oscillator);
                 
-                // Cria efeito de sirene alternando frequência
                 let time = audioContext.currentTime;
                 let highFreq = true;
                 
-                // Toca o alarme por 2 segundos
                 alarmInterval = setInterval(() => {
                     if (highFreq) {
                         oscillator.frequency.exponentialRampToValueAtTime(1200, time + 0.3);
@@ -430,36 +635,230 @@
                     time += 0.3;
                 }, 300);
                 
-                // Para o som após 2 segundos
+                // Para automaticamente após 2 segundos
                 setTimeout(() => {
-                    if (alarmInterval) clearInterval(alarmInterval);
+                    if (alarmInterval) {
+                        clearInterval(alarmInterval);
+                        alarmInterval = null;
+                    }
                     oscillator.stop();
-                    
-                    // Fade out suave
                     gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.5);
+                    
+                    // Remove do array após parar
+                    currentOscillators = currentOscillators.filter(osc => osc !== oscillator);
                 }, 2000);
                 
             } catch (error) {
                 console.log('Erro ao reproduzir som:', error);
-                // Fallback: usar beep do sistema
-                try {
-                    const beep = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAZGF0YQ');
-                    beep.play();
-                } catch (e) {
-                    console.log('Não foi possível reproduzir som de alarme');
-                }
             }
         }
+        
+        // Função para tocar som de chamada telefônica
+        function playCallSound() {
+            if (!isSoundEnabled) return;
+            
+            stopAllSounds(); // Para todos os sons antes de iniciar novo
+            
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Som de toque de telefone
+                const oscillator1 = audioContext.createOscillator();
+                const oscillator2 = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator1.connect(gainNode);
+                oscillator2.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator1.type = 'sine';
+                oscillator2.type = 'sine';
+                oscillator1.frequency.setValueAtTime(440, audioContext.currentTime);
+                oscillator2.frequency.setValueAtTime(480, audioContext.currentTime);
+                
+                // Padrão de toque: 1 segundo de som, 2 segundos de silêncio
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime + 1);
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime + 3);
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime + 4);
+                
+                oscillator1.start();
+                oscillator2.start();
+                
+                currentOscillators.push(oscillator1, oscillator2);
+                
+                // Para o som após 4 segundos
+                setTimeout(() => {
+                    if (callActive) {
+                        oscillator1.stop();
+                        oscillator2.stop();
+                        
+                        // Remove do array
+                        currentOscillators = currentOscillators.filter(osc => 
+                            osc !== oscillator1 && osc !== oscillator2
+                        );
+                        
+                        // Se a chamada ainda estiva ativa (não foi atendida nem recusada), toca novamente
+                        if (callActive && callStatus.textContent === 'Chamando...') {
+                            playCallSound();
+                        }
+                    }
+                }, 4000);
+                
+            } catch (error) {
+                console.log('Erro ao reproduzir som de chamada:', error);
+            }
+        }
+        
+        // Função para parar som de chamada
+        function stopCallSound() {
+            // Para o intervalo se existir
+            if (callSoundInterval) {
+                clearInterval(callSoundInterval);
+                callSoundInterval = null;
+            }
+            
+            // Para todos os osciladores
+            currentOscillators.forEach(osc => {
+                try {
+                    osc.stop();
+                } catch(e) {}
+            });
+            currentOscillators = [];
+        }
+        
+        // Função para iniciar temporizador de chamada
+        function startCallTimer() {
+            callSeconds = 0;
+            callTimerInterval = setInterval(() => {
+                callSeconds++;
+                const minutes = Math.floor(callSeconds / 60);
+                const seconds = callSeconds % 60;
+                callTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+        
+        // Função para parar temporizador de chamada
+        function stopCallTimer() {
+            if (callTimerInterval) {
+                clearInterval(callTimerInterval);
+                callTimerInterval = null;
+            }
+        }
+        
+        // Função para encerrar a chamada completamente
+        function endCall() {
+            stopCallSound();
+            stopCallTimer();
+            document.body.classList.remove('vibration');
+            fakeCallScreen.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Remove classe active do botão
+            document.querySelectorAll('.feature-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            callActive = false;
+            
+            // Fecha o contexto de áudio
+            try {
+                if (audioContext && audioContext.state !== 'closed') {
+                    audioContext.close();
+                }
+            } catch(e) {}
+        }
+        
+        // Iniciar ligação falsa
+        fakeCallBtn.addEventListener('click', function() {
+            // Remove classe active de todos os botões
+            removeActiveClass();
+            
+            // Adiciona classe active ao botão de ligação falsa
+            this.classList.add('active');
+            
+            // Inicia a simulação de chamada
+            callActive = true;
+            
+            // Mostra a tela de chamada
+            fakeCallScreen.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Configura o contato
+            callContactName.textContent = 'Trabalho';
+            callStatus.textContent = 'Chamando...';
+            callStatus.style.color = '';
+            callTimer.textContent = '00:00';
+            
+            // Reseta o botão de atender para o estado original
+            answerCallBtn.innerHTML = `
+                <div class="call-button-icon call-answer">
+                    <i class="bi bi-telephone"></i>
+                </div>
+                <div class="call-button-text">Atender</div>
+            `;
+            
+            // Toca o som de chamada
+            playCallSound();
+            
+            // Adiciona efeito de vibração
+            document.body.classList.add('vibration');
+        });
+        
+        // Atender chamada
+        answerCallBtn.addEventListener('click', function() {
+            if (!callActive) return;
+            
+            // Para o som de chamada
+            stopCallSound();
+            
+            // Remove vibração
+            document.body.classList.remove('vibration');
+            
+            // Atualiza status
+            callStatus.textContent = 'Em chamada...';
+            callStatus.style.color = '#2ecc71';
+            
+            // Inicia o temporizador
+            startCallTimer();
+            
+            // Muda o botão de atender para desligar
+            this.innerHTML = `
+                <div class="call-button-icon call-decline">
+                    <i class="bi bi-telephone-x"></i>
+                </div>
+                <div class="call-button-text">Desligar</div>
+            `;
+            
+            // Adiciona som de chamada em andamento (opcional)
+            setTimeout(() => {
+                if (isSoundEnabled && callActive) {
+                    alert('🤫 Dica: Você pode fingir uma conversa para dissuadir uma situação suspeita.\n\nExemplo: "Oi chefe! Estou quase chegando no escritório..."');
+                }
+            }, 1000);
+        });
+        
+        // Recusar/Desligar chamada
+        declineCallBtn.addEventListener('click', function() {
+            endCall();
+            
+            // Mostra confirmação
+            alert(callSeconds > 0 ? 
+                '✅ Ligação falsa encerrada com sucesso!' : 
+                '✅ Ligação falsa recusada com sucesso!');
+        });
         
         // Interatividade para o botão SOS
         sosButton.addEventListener('click', function() {
             const button = this;
             const originalText = button.textContent;
             
-            // Desativa a possibilidade de clicar novamente durante a ativação
-            button.disabled = true;
+            // Se houver uma chamada ativa, encerra primeiro
+            if (callActive) {
+                endCall();
+            }
             
-            // Efeito visual de ativação
+            button.disabled = true;
             button.textContent = 'ATIVANDO...';
             button.classList.add('alarming');
             statusDot.classList.add('alarming');
@@ -467,10 +866,8 @@
             statusText.style.color = '#ff0000';
             statusText.style.fontWeight = 'bold';
             
-            // Toca o som de alarme
             playAlarmSound();
             
-            // Simula ativação do SOS
             setTimeout(() => {
                 button.innerHTML = '<i class="bi bi-shield-check"></i> SOS ATIVADO';
                 button.classList.remove('alarming');
@@ -479,13 +876,10 @@
                 statusText.textContent = 'SISTEMA DE EMERGÊNCIA ATIVADO';
                 statusText.style.color = '#2ecc71';
                 
-                // Mostra alerta de confirmação
-                alert('?? SOS ATIVADO COM SUCESSO! ??\n\n? Sua localização foi enviada para a central\n? Transmissão ao vivo iniciada\n? Equipe de segurança acionada\n? Seus guardiões foram notificados');
+                alert('🚨 SOS ATIVADO COM SUCESSO! 🚨\n\n✅ Sua localização foi enviada para a central\n✅ Transmissão ao vivo iniciada\n✅ Equipe de segurança acionada\n✅ Seus guardiões foram notificados');
                 
-                // Habilita o botão novamente
                 button.disabled = false;
                 
-                // Mantém o estado ativo por 10 segundos
                 setTimeout(() => {
                     button.textContent = originalText;
                     button.classList.remove('active');
@@ -494,7 +888,7 @@
                     statusText.style.color = '#666';
                     statusText.style.fontWeight = 'normal';
                 }, 10000);
-            }, 2000); // Tempo do alarme (2 segundos)
+            }, 2000);
         });
         
         // Efeitos de hover nas funcionalidades
@@ -522,28 +916,39 @@
             item.addEventListener('click', function() {
                 const feature = this.getAttribute('data-feature');
                 
-                // Verifica se é o botão "Meu perfil"
                 if (feature === 'perfil') {
-                    // Redireciona para perfil.html
                     window.location.href = 'perfil.html';
-                    return; // Sai da função para não aplicar o estilo verde
+                    return;
                 }
                 
-                // Remove a classe active de todos os botões
-                removeActiveClass();
-                
-                // Adiciona a classe active ao botão clicado (exceto perfil)
-                this.classList.add('active');
+                // Se for ligação falsa, não remove a classe active dos outros
+                if (feature !== 'ligacao-falsa') {
+                    removeActiveClass();
+                    this.classList.add('active');
+                }
             });
         });
         
         // Prevenir que o som seja bloqueado pelo navegador
         document.addEventListener('click', function() {
-            // Inicializa o contexto de áudio no primeiro clique do usuário
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
         }, { once: true });
+        
+        // Fechar chamada ao pressionar ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && callActive) {
+                declineCallBtn.click();
+            }
+        });
+        
+        // Fechar chamada se clicar fora (apenas quando estiver chamando)
+        fakeCallScreen.addEventListener('click', function(e) {
+            if (e.target === this && callStatus.textContent === 'Chamando...') {
+                declineCallBtn.click();
+            }
+        });
     </script>
 </body>
 </html>
