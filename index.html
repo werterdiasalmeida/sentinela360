@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sentinela 360</title>
     <!-- Bootstrap 5 CSS -->
@@ -165,7 +165,7 @@
             100% { opacity: 0.7; }
         }
         
-        /* Cores diferentes para cada ícone */
+        /* Cores diferentes para cada Ã­cone */
         .icon-1 { color: #0e0446; }
         .icon-2 { color: #0e0446; }
         .icon-3 { color: #0e0446; }
@@ -214,31 +214,31 @@
         
         <div class="features-section">
             <div class="features-grid">
-                <!-- Ativação SOS por Voz ou Toque -->
+                <!-- AtivaÃ§Ã£o SOS por Voz ou Toque -->
                 <div class="feature-item">
                     <div class="feature-icon icon-1">
                         <i class="bi bi-mic-fill"></i>
                     </div>
-                    <div class="feature-text">Ativação SOS</div>
+                    <div class="feature-text">AtivaÃ§Ã£o SOS</div>
                     <div class="feature-desc">por Voz ou Toque</div>
                 </div>
                 
-                <!-- Transmissão ao Vivo -->
+                <!-- TransmissÃ£o ao Vivo -->
                 <div class="feature-item">
                     <div class="feature-icon icon-2">
                         <i class="bi bi-camera-video-fill"></i>
                     </div>
-                    <div class="feature-text">Transmissão</div>
+                    <div class="feature-text">TransmissÃ£o</div>
                     <div class="feature-desc">ao Vivo</div>
                 </div>
                 
-                <!-- Gravação Automática -->
+                <!-- GravaÃ§Ã£o AutomÃ¡tica -->
                 <div class="feature-item">
                     <div class="feature-icon icon-3">
                         <i class="bi bi-record-circle-fill"></i>
                     </div>
-                    <div class="feature-text">Gravação</div>
-                    <div class="feature-desc">Automática</div>
+                    <div class="feature-text">GravaÃ§Ã£o</div>
+                    <div class="feature-desc">AutomÃ¡tica</div>
                 </div>
                 
                 <!-- Siga-me -->
@@ -250,13 +250,13 @@
                     <div class="feature-desc">Rastreamento em tempo real</div>
                 </div>
                 
-                <!-- Ligação Falsa -->
+                <!-- LigaÃ§Ã£o Falsa -->
                 <div class="feature-item">
                     <div class="feature-icon icon-5">
                         <i class="bi bi-telephone-inbound-fill"></i>
                     </div>
-                    <div class="feature-text">Ligação Falsa</div>
-                    <div class="feature-desc">Simulação de chamada</div>
+                    <div class="feature-text">LigaÃ§Ã£o Falsa</div>
+                    <div class="feature-desc">SimulaÃ§Ã£o de chamada</div>
                 </div>
                 
                 <!-- Central de Atendimento -->
@@ -265,7 +265,7 @@
                         <i class="bi bi-people"></i>
                     </div>
                     <div class="feature-text">Meu perfil</div>
-                    <div class="feature-desc">Ajustar os meus dados e guardiões</div>
+                    <div class="feature-desc">Ajustar os meus dados e guardiÃµes</div>
                 </div>
             </div>
         </div>
@@ -285,19 +285,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Interatividade para o botão SOS
+        // Interatividade para o botÃ£o SOS
         const sosButton = document.getElementById('sosButton');
         
         sosButton.addEventListener('click', function() {
             const button = this;
             const originalText = button.textContent;
             
-            // Efeito visual de ativação
+            // Efeito visual de ativaÃ§Ã£o
             button.textContent = 'ATIVANDO...';
             button.classList.add('active');
             button.style.animation = 'pulse 0.5s infinite alternate';
             
-            // Adiciona estilo de animação
+            // Adiciona estilo de animaÃ§Ã£o
             const style = document.createElement('style');
             style.innerHTML = `
                 @keyframes pulse {
@@ -307,14 +307,14 @@
             `;
             document.head.appendChild(style);
             
-            // Simula ativação do SOS
+            // Simula ativaÃ§Ã£o do SOS
             setTimeout(() => {
                 button.innerHTML = '<i class="bi bi-shield-check"></i> SOS ATIVADO';
                 
-                // Mostra alerta de confirmação
-                alert('SOS ATIVADO COM SUCESSO!\n\nSua localização foi enviada para a central.\nTransmissão ao vivo iniciada.\nEquipe de segurança acionada.');
+                // Mostra alerta de confirmaÃ§Ã£o
+                alert('SOS ATIVADO COM SUCESSO!\n\nSua localizaÃ§Ã£o foi enviada para a central.\nTransmissÃ£o ao vivo iniciada.\nEquipe de seguranÃ§a acionada.');
                 
-                // Mantém o estado ativo por 10 segundos
+                // MantÃ©m o estado ativo por 10 segundos
                 setTimeout(() => {
                     button.textContent = originalText;
                     button.classList.remove('active');
@@ -337,4 +337,5 @@
         });
     </script>
 </body>
+
 </html>
