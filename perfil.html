@@ -334,35 +334,35 @@
                 <img src="logo.jpeg" style="width: 250px;">
             </div>
             <div class="page-title">Meu Perfil</div>
-            <div class="page-subtitle">Gerencie suas configuraÁıes de seguranÁa</div>
+            <div class="page-subtitle">Gerencie suas configura√ß√µes de seguran√ßa</div>
         </div>
         
         <div class="profile-section">
-            <!-- Bot„o para cadastrar rotas rotineiras -->
+            <!-- Bot√£o para cadastrar rotas rotineiras -->
             <div class="section-title">Rotas Rotineiras</div>
             <button class="btn-primary-custom" id="addRouteBtn">
                 <i class="bi bi-geo-alt"></i>
                 Cadastrar Nova Rota
             </button>
             
-            <!-- Lista de Guardiıes -->
-            <div class="section-title">Guardiıes</div>
+            <!-- Lista de Guardi√µes -->
+            <div class="section-title">Guardi√µes</div>
             <div class="guardians-section">
                 <div id="guardiansList">
-                    <!-- Lista de guardiıes ser· inserida aqui dinamicamente -->
+                    <!-- Lista de guardi√µes ser√° inserida aqui dinamicamente -->
                 </div>
                 
                 <button class="btn-primary-custom" id="addGuardianBtn">
                     <i class="bi bi-person-plus"></i>
-                    Adicionar Guardi„o
+                    Adicionar Guardi√£o
                 </button>
             </div>
             
-            <!-- Formul·rio para adicionar guardi„o -->
+            <!-- Formul√°rio para adicionar guardi√£o -->
             <div class="add-guardian-form" id="guardianForm">
-                <div class="form-title">Adicionar Guardi„o</div>
+                <div class="form-title">Adicionar Guardi√£o</div>
                 <div class="form-group">
-                    <label class="form-label" for="guardianName">Nome do Guardi„o</label>
+                    <label class="form-label" for="guardianName">Nome do Guardi√£o</label>
                     <input type="text" class="form-input" id="guardianName" placeholder="Digite o nome completo">
                 </div>
                 <div class="form-group">
@@ -376,7 +376,7 @@
             </div>
         </div>
         
-        <!-- Bot„o de Voltar -->
+        <!-- Bot√£o de Voltar -->
         <div class="back-bottom-section">
             <button class="back-button-bottom" id="backButtonBottom">
                 <i class="bi bi-arrow-left"></i> Voltar para Tela Principal
@@ -388,29 +388,29 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Voltar para a p·gina principal (bot„o superior)
+        // Voltar para a p√°gina principal (bot√£o superior)
         document.getElementById('backButton').addEventListener('click', function() {
             window.location.href = 'index.html';
         });
         
-        // Voltar para a p·gina principal (bot„o inferior)
+        // Voltar para a p√°gina principal (bot√£o inferior)
         document.getElementById('backButtonBottom').addEventListener('click', function() {
             window.location.href = 'index.html';
         });
         
-        // Bot„o para cadastrar rotas rotineiras
+        // Bot√£o para cadastrar rotas rotineiras
         document.getElementById('addRouteBtn').addEventListener('click', function() {
-            alert('Funcionalidade de cadastro de rotas rotineiras!\n\nEm uma vers„o completa, esta funcionalidade permitiria:\n1. Definir rotas que vocÍ faz frequentemente\n2. Estabelecer hor·rios esperados\n3. Receber alertas se desviar da rota\n4. Compartilhar rotas com seus guardiıes');
+            alert('Funcionalidade de cadastro de rotas rotineiras!\n\nEm uma vers√£o completa, esta funcionalidade permitiria:\n1. Definir rotas que voc√™ faz frequentemente\n2. Estabelecer hor√°rios esperados\n3. Receber alertas se desviar da rota\n4. Compartilhar rotas com seus guardi√µes');
         });
         
-        // Vari·veis para gerenciar guardiıes
-        // J· inicializa com os dois contatos prÈ-cadastrados
+        // Vari√°veis para gerenciar guardi√µes
+        // J√° inicializa com os dois contatos pr√©-cadastrados
         let guardians = JSON.parse(localStorage.getItem('sentinelaGuardians')) || [
-            { id: 1, name: 'M„e', phone: '(61) 9999-8868' },
-            { id: 2, name: 'CondomÌnio', phone: '(61) 3554-9986' }
+            { id: 1, name: 'M√£e', phone: '(61) 9999-8868' },
+            { id: 2, name: 'Condom√≠nio', phone: '(61) 3554-9986' }
         ];
         
-        // Se n„o tinha guardiıes salvos, salva os padrıes
+        // Se n√£o tinha guardi√µes salvos, salva os padr√µes
         if (!localStorage.getItem('sentinelaGuardians')) {
             localStorage.setItem('sentinelaGuardians', JSON.stringify(guardians));
         }
@@ -426,7 +426,7 @@
         const guardianNameInput = document.getElementById('guardianName');
         const guardianPhoneInput = document.getElementById('guardianPhone');
         
-        // Mostrar/ocultar formul·rio de guardi„o
+        // Mostrar/ocultar formul√°rio de guardi√£o
         addGuardianBtn.addEventListener('click', function() {
             guardianForm.style.display = 'block';
             addGuardianBtn.style.display = 'none';
@@ -443,23 +443,23 @@
             editingGuardianId = null;
         });
         
-        // Salvar guardi„o
+        // Salvar guardi√£o
         saveGuardianBtn.addEventListener('click', function() {
             const name = guardianNameInput.value.trim();
             const phone = guardianPhoneInput.value.trim();
             
             if (!name) {
-                alert('Por favor, informe o nome do guardi„o.');
+                alert('Por favor, informe o nome do guardi√£o.');
                 return;
             }
             
             if (!phone) {
-                alert('Por favor, informe o telefone do guardi„o.');
+                alert('Por favor, informe o telefone do guardi√£o.');
                 return;
             }
             
             if (editingGuardianId !== null) {
-                // Editar guardi„o existente
+                // Editar guardi√£o existente
                 guardians = guardians.map(g => {
                     if (g.id === editingGuardianId) {
                         return { ...g, name, phone };
@@ -467,7 +467,7 @@
                     return g;
                 });
             } else {
-                // Adicionar novo guardi„o
+                // Adicionar novo guardi√£o
                 const newGuardian = {
                     id: Date.now(),
                     name,
@@ -482,7 +482,7 @@
             // Atualizar a lista
             renderGuardiansList();
             
-            // Limpar formul·rio e ocultar
+            // Limpar formul√°rio e ocultar
             guardianNameInput.value = '';
             guardianPhoneInput.value = '';
             guardianForm.style.display = 'none';
@@ -490,10 +490,10 @@
             editingGuardianId = null;
             
             // Mostrar mensagem de sucesso
-            alert(editingGuardianId !== null ? 'Guardi„o atualizado com sucesso!' : 'Guardi„o adicionado com sucesso!');
+            alert(editingGuardianId !== null ? 'Guardi√£o atualizado com sucesso!' : 'Guardi√£o adicionado com sucesso!');
         });
         
-        // Editar guardi„o
+        // Editar guardi√£o
         function editGuardian(id) {
             const guardian = guardians.find(g => g.id === id);
             if (guardian) {
@@ -505,31 +505,31 @@
             }
         }
         
-        // Excluir guardi„o
+        // Excluir guardi√£o
         function deleteGuardian(id) {
-            // Impede a exclus„o dos contatos padr„o
+            // Impede a exclus√£o dos contatos padr√£o
             if (id === 1 || id === 2) {
-                alert('Este È um contato padr„o e n„o pode ser removido.');
+                alert('Este √© um contato padr√£o e n√£o pode ser removido.');
                 return;
             }
             
-            if (confirm('Tem certeza que deseja remover este guardi„o?')) {
+            if (confirm('Tem certeza que deseja remover este guardi√£o?')) {
                 guardians = guardians.filter(g => g.id !== id);
                 localStorage.setItem('sentinelaGuardians', JSON.stringify(guardians));
                 renderGuardiansList();
-                alert('Guardi„o removido com sucesso!');
+                alert('Guardi√£o removido com sucesso!');
             }
         }
         
-        // Renderizar lista de guardiıes
+        // Renderizar lista de guardi√µes
         function renderGuardiansList() {
             if (guardians.length === 0) {
                 let emptyState = document.createElement('div');
                 emptyState.className = 'empty-state';
                 emptyState.innerHTML = `
                     <i class="bi bi-people"></i>
-                    <p>Nenhum guardi„o cadastrado ainda.</p>
-                    <p>Adicione contatos de confianÁa para notificar em emergÍncias.</p>
+                    <p>Nenhum guardi√£o cadastrado ainda.</p>
+                    <p>Adicione contatos de confian√ßa para notificar em emerg√™ncias.</p>
                 `;
                 guardiansList.innerHTML = '';
                 guardiansList.appendChild(emptyState);
@@ -538,7 +538,7 @@
             
             let html = '';
             guardians.forEach(guardian => {
-                // Verifica se È um contato padr„o (n„o pode ser excluÌdo)
+                // Verifica se √© um contato padr√£o (n√£o pode ser exclu√≠do)
                 const isDefault = guardian.id === 1 || guardian.id === 2;
                 
                 html += `
@@ -556,7 +556,7 @@
                                     <i class="bi bi-trash"></i>
                                 </button>
                             ` : `
-                                <button class="action-btn delete-btn" style="opacity: 0.3; cursor: not-allowed;" title="Contato padr„o n„o pode ser removido">
+                                <button class="action-btn delete-btn" style="opacity: 0.3; cursor: not-allowed;" title="Contato padr√£o n√£o pode ser removido">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             `}
@@ -568,7 +568,7 @@
             guardiansList.innerHTML = html;
         }
         
-        // FormataÁ„o autom·tica do telefone
+        // Formata√ß√£o autom√°tica do telefone
         guardianPhoneInput.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
             
@@ -585,10 +585,10 @@
             e.target.value = value;
         });
         
-        // Inicializar a lista de guardiıes
+        // Inicializar a lista de guardi√µes
         renderGuardiansList();
         
-        // Disponibilizar funÁıes globalmente para os eventos onclick
+        // Disponibilizar fun√ß√µes globalmente para os eventos onclick
         window.editGuardian = editGuardian;
         window.deleteGuardian = deleteGuardian;
     </script>
