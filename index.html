@@ -36,7 +36,6 @@
         
         .app-header {
             background-color: #fff;
-           
             text-align: center;
         }
         
@@ -67,7 +66,7 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 15px; /* Reduzido de 30px para 15px */
         }
         
         .feature-item {
@@ -77,6 +76,7 @@
             text-align: center;
             border: 1px solid #eaeaea;
             transition: all 0.2s ease;
+            cursor: pointer;
         }
         
         .feature-item:hover {
@@ -84,10 +84,20 @@
             transform: translateY(-2px);
         }
         
+        .feature-item.active {
+            border-color: #28a745;
+        }
+        
+        .feature-item.active .feature-icon,
+        .feature-item.active .feature-text,
+        .feature-item.active .feature-desc {
+            color: #28a745 !important;
+        }
+        
         .feature-icon {
             font-size: 28px;
             margin-bottom: 12px;
-            color: #e74c3c;
+            color: #0e0446;
         }
         
         .feature-text {
@@ -105,7 +115,7 @@
         
         .sos-section {
             text-align: center;
-            padding: 20px;
+            padding: 15px 20px 20px; /* Reduzido padding superior de 20px para 15px */
             background-color: #f8f9fa;
             border-top: 1px solid #eaeaea;
         }
@@ -141,6 +151,22 @@
             box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
         }
         
+        .sos-button.alarming {
+            animation: alarmPulse 0.5s infinite alternate;
+            background: linear-gradient(to bottom, #ff0000, #990000);
+        }
+        
+        @keyframes alarmPulse {
+            from { 
+                box-shadow: 0 6px 15px rgba(255, 0, 0, 0.6);
+                transform: scale(1);
+            }
+            to { 
+                box-shadow: 0 6px 25px rgba(255, 0, 0, 0.9);
+                transform: scale(1.05);
+            }
+        }
+        
         .status-indicator {
             display: flex;
             align-items: center;
@@ -159,19 +185,32 @@
             animation: pulse 2s infinite;
         }
         
+        .status-dot.alarming {
+            background-color: #ff0000;
+            animation: alarmPulseDot 0.5s infinite alternate;
+        }
+        
         @keyframes pulse {
             0% { opacity: 0.7; }
             50% { opacity: 1; }
             100% { opacity: 0.7; }
         }
         
-        /* Cores diferentes para cada √≠cone */
-        .icon-1 { color: #0e0446; }
-        .icon-2 { color: #0e0446; }
-        .icon-3 { color: #0e0446; }
-        .icon-4 { color: #0e0446; }
-        .icon-5 { color: #0e0446; }
-        .icon-6 { color: #0e0446; }
+        @keyframes alarmPulseDot {
+            from { 
+                opacity: 0.3;
+                box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+            }
+            to { 
+                opacity: 1;
+                box-shadow: 0 0 15px rgba(255, 0, 0, 1);
+            }
+        }
+        
+        /* Cores diferentes para cada Ìcone */
+        .icon-1, .icon-2, .icon-3, .icon-4, .icon-5, .icon-6 {
+            color: #0e0446;
+        }
         
         /* Responsividade */
         @media (max-width: 480px) {
@@ -201,9 +240,47 @@
                 font-size: 18px;
             }
         }
+        
+        /* Controles de som */
+        .sound-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+        
+        .sound-toggle {
+            background: rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .sound-toggle:hover {
+            background: rgba(0, 0, 0, 0.15);
+        }
+        
+        .sound-toggle.muted {
+            color: #e74c3c;
+        }
     </style>
 </head>
 <body>
+    <!-- Controle de som -->
+    <div class="sound-controls">
+        <button class="sound-toggle" id="soundToggle" title="Ativar/Desativar som">
+            <i class="bi bi-volume-up"></i>
+        </button>
+    </div>
+    
     <div class="app-screen">
         <div class="app-header">
             <div class="logo-container">
@@ -214,35 +291,35 @@
         
         <div class="features-section">
             <div class="features-grid">
-                <!-- Ativa√ß√£o SOS por Voz ou Toque -->
-                <div class="feature-item">
+                <!-- AtivaÁ„o SOS por Voz ou Toque -->
+                <div class="feature-item" data-feature="sos">
                     <div class="feature-icon icon-1">
                         <i class="bi bi-mic-fill"></i>
                     </div>
-                    <div class="feature-text">Ativa√ß√£o SOS</div>
+                    <div class="feature-text">AtivaÁ„o SOS</div>
                     <div class="feature-desc">por Voz ou Toque</div>
                 </div>
                 
-                <!-- Transmiss√£o ao Vivo -->
-                <div class="feature-item">
+                <!-- Transmiss„o ao Vivo -->
+                <div class="feature-item" data-feature="transmissao">
                     <div class="feature-icon icon-2">
                         <i class="bi bi-camera-video-fill"></i>
                     </div>
-                    <div class="feature-text">Transmiss√£o</div>
+                    <div class="feature-text">Transmiss„o</div>
                     <div class="feature-desc">ao Vivo</div>
                 </div>
                 
-                <!-- Grava√ß√£o Autom√°tica -->
-                <div class="feature-item">
+                <!-- GravaÁ„o Autom·tica -->
+                <div class="feature-item" data-feature="gravacao">
                     <div class="feature-icon icon-3">
                         <i class="bi bi-record-circle-fill"></i>
                     </div>
-                    <div class="feature-text">Grava√ß√£o</div>
-                    <div class="feature-desc">Autom√°tica</div>
+                    <div class="feature-text">GravaÁ„o</div>
+                    <div class="feature-desc">Autom·tica</div>
                 </div>
                 
                 <!-- Siga-me -->
-                <div class="feature-item">
+                <div class="feature-item" data-feature="siga-me">
                     <div class="feature-icon icon-4">
                         <i class="bi bi-geo-alt-fill"></i>
                     </div>
@@ -250,22 +327,22 @@
                     <div class="feature-desc">Rastreamento em tempo real</div>
                 </div>
                 
-                <!-- Liga√ß√£o Falsa -->
-                <div class="feature-item">
+                <!-- LigaÁ„o Falsa -->
+                <div class="feature-item" data-feature="ligacao-falsa">
                     <div class="feature-icon icon-5">
                         <i class="bi bi-telephone-inbound-fill"></i>
                     </div>
-                    <div class="feature-text">Liga√ß√£o Falsa</div>
-                    <div class="feature-desc">Simula√ß√£o de chamada</div>
+                    <div class="feature-text">LigaÁ„o Falsa</div>
+                    <div class="feature-desc">SimulaÁ„o de chamada</div>
                 </div>
                 
                 <!-- Central de Atendimento -->
-                <div class="feature-item">
+                <div class="feature-item" data-feature="perfil" id="perfil-btn">
                     <div class="feature-icon icon-6">
                         <i class="bi bi-people"></i>
                     </div>
                     <div class="feature-text">Meu perfil</div>
-                    <div class="feature-desc">Ajustar os meus dados e guardi√µes</div>
+                    <div class="feature-desc">Ajustar os meus dados e guardiıes</div>
                 </div>
             </div>
         </div>
@@ -275,8 +352,8 @@
                 ATIVAR SOS
             </button>
             <div class="status-indicator">
-                <div class="status-dot"></div>
-                Sistema ativo e monitorando
+                <div class="status-dot" id="statusDot"></div>
+                <span id="statusText">Sistema ativo e monitorando</span>
             </div>
         </div>
     </div>
@@ -285,42 +362,139 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Interatividade para o bot√£o SOS
-        const sosButton = document.getElementById('sosButton');
+        // Vari·veis globais
+        let audioContext;
+        let alarmInterval;
+        let isSoundEnabled = true;
         
+        // Elementos DOM
+        const sosButton = document.getElementById('sosButton');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const soundToggle = document.getElementById('soundToggle');
+        const soundIcon = soundToggle.querySelector('i');
+        
+        // Controle de som
+        soundToggle.addEventListener('click', function() {
+            isSoundEnabled = !isSoundEnabled;
+            
+            if (isSoundEnabled) {
+                soundToggle.classList.remove('muted');
+                soundIcon.className = 'bi bi-volume-up';
+                soundToggle.title = 'Desativar som';
+            } else {
+                soundToggle.classList.add('muted');
+                soundIcon.className = 'bi bi-volume-mute';
+                soundToggle.title = 'Ativar som';
+            }
+        });
+        
+        // FunÁ„o para criar som de alarme
+        function playAlarmSound() {
+            if (!isSoundEnabled) return;
+            
+            try {
+                // Cria contexto de ·udio
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Cria um oscilador para o som de alarme
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                // Conecta os nÛs
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Configura o oscilador para um som de sirene
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                
+                // Configura o ganho (volume)
+                gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+                
+                // Inicia o oscilador
+                oscillator.start();
+                
+                // Cria efeito de sirene alternando frequÍncia
+                let time = audioContext.currentTime;
+                let highFreq = true;
+                
+                // Toca o alarme por 2 segundos
+                alarmInterval = setInterval(() => {
+                    if (highFreq) {
+                        oscillator.frequency.exponentialRampToValueAtTime(1200, time + 0.3);
+                    } else {
+                        oscillator.frequency.exponentialRampToValueAtTime(600, time + 0.3);
+                    }
+                    highFreq = !highFreq;
+                    time += 0.3;
+                }, 300);
+                
+                // Para o som apÛs 2 segundos
+                setTimeout(() => {
+                    if (alarmInterval) clearInterval(alarmInterval);
+                    oscillator.stop();
+                    
+                    // Fade out suave
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.5);
+                }, 2000);
+                
+            } catch (error) {
+                console.log('Erro ao reproduzir som:', error);
+                // Fallback: usar beep do sistema
+                try {
+                    const beep = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAZGF0YQ');
+                    beep.play();
+                } catch (e) {
+                    console.log('N„o foi possÌvel reproduzir som de alarme');
+                }
+            }
+        }
+        
+        // Interatividade para o bot„o SOS
         sosButton.addEventListener('click', function() {
             const button = this;
             const originalText = button.textContent;
             
-            // Efeito visual de ativa√ß√£o
+            // Desativa a possibilidade de clicar novamente durante a ativaÁ„o
+            button.disabled = true;
+            
+            // Efeito visual de ativaÁ„o
             button.textContent = 'ATIVANDO...';
-            button.classList.add('active');
-            button.style.animation = 'pulse 0.5s infinite alternate';
+            button.classList.add('alarming');
+            statusDot.classList.add('alarming');
+            statusText.textContent = 'ATIVANDO SISTEMA DE EMERG NCIA';
+            statusText.style.color = '#ff0000';
+            statusText.style.fontWeight = 'bold';
             
-            // Adiciona estilo de anima√ß√£o
-            const style = document.createElement('style');
-            style.innerHTML = `
-                @keyframes pulse {
-                    from { box-shadow: 0 6px 15px rgba(46, 204, 113, 0.3); }
-                    to { box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6); }
-                }
-            `;
-            document.head.appendChild(style);
+            // Toca o som de alarme
+            playAlarmSound();
             
-            // Simula ativa√ß√£o do SOS
+            // Simula ativaÁ„o do SOS
             setTimeout(() => {
                 button.innerHTML = '<i class="bi bi-shield-check"></i> SOS ATIVADO';
+                button.classList.remove('alarming');
+                button.classList.add('active');
+                statusDot.classList.remove('alarming');
+                statusText.textContent = 'SISTEMA DE EMERG NCIA ATIVADO';
+                statusText.style.color = '#2ecc71';
                 
-                // Mostra alerta de confirma√ß√£o
-                alert('SOS ATIVADO COM SUCESSO!\n\nSua localiza√ß√£o foi enviada para a central.\nTransmiss√£o ao vivo iniciada.\nEquipe de seguran√ßa acionada.');
+                // Mostra alerta de confirmaÁ„o
+                alert('?? SOS ATIVADO COM SUCESSO! ??\n\n? Sua localizaÁ„o foi enviada para a central\n? Transmiss„o ao vivo iniciada\n? Equipe de seguranÁa acionada\n? Seus guardiıes foram notificados');
                 
-                // Mant√©m o estado ativo por 10 segundos
+                // Habilita o bot„o novamente
+                button.disabled = false;
+                
+                // MantÈm o estado ativo por 10 segundos
                 setTimeout(() => {
                     button.textContent = originalText;
                     button.classList.remove('active');
                     button.style.animation = 'none';
+                    statusText.textContent = 'Sistema ativo e monitorando';
+                    statusText.style.color = '#666';
+                    statusText.style.fontWeight = 'normal';
                 }, 10000);
-            }, 1500);
+            }, 2000); // Tempo do alarme (2 segundos)
         });
         
         // Efeitos de hover nas funcionalidades
@@ -335,7 +509,41 @@
                 this.style.boxShadow = 'none';
             });
         });
+        
+        // FunÁ„o para remover a classe active de todos os botıes
+        function removeActiveClass() {
+            document.querySelectorAll('.feature-item').forEach(item => {
+                item.classList.remove('active');
+            });
+        }
+        
+        // Adicionar evento de clique para todos os botıes de funcionalidade
+        document.querySelectorAll('.feature-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const feature = this.getAttribute('data-feature');
+                
+                // Verifica se È o bot„o "Meu perfil"
+                if (feature === 'perfil') {
+                    // Redireciona para perfil.html
+                    window.location.href = 'perfil.html';
+                    return; // Sai da funÁ„o para n„o aplicar o estilo verde
+                }
+                
+                // Remove a classe active de todos os botıes
+                removeActiveClass();
+                
+                // Adiciona a classe active ao bot„o clicado (exceto perfil)
+                this.classList.add('active');
+            });
+        });
+        
+        // Prevenir que o som seja bloqueado pelo navegador
+        document.addEventListener('click', function() {
+            // Inicializa o contexto de ·udio no primeiro clique do usu·rio
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }, { once: true });
     </script>
 </body>
-
 </html>
